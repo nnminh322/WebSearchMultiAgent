@@ -1,0 +1,9 @@
+The current plan needs revision because: {replan_reason}
+
+Current plan:
+{json.dumps(prior_plan, indent=2)}
+
+When replanning:
+- Focus on UNBLOCKING the workflow rather than perfecting it.
+- Only modify steps that are truly preventing progress.
+- Prefer simpler, more achievable alternatives over complex rewrites.
