@@ -1,0 +1,15 @@
+default:
+  api_key_name: "default_api"
+  base_url: "https://models.github.ai/inference"
+  model_name: "openai/gpt-4o"
+  temperature: 0
+  # response_format:
+  #   type: "json_object"
+
+planner:
+  api_key_name: "planner_api"
+  base_url: "https://models.github.ai/inference"
+  model_name: "openai/gpt-4o"
+  temperature: 0
+  response_format:
+    type: "json_object"

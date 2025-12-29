@@ -1,6 +1,7 @@
 import json
 import yaml
-from typing import Dict, Any
+from typing import Dict, Any, Literal
+from langgraph.types import Command
 from langchain_core.messages import HumanMessage
 
 from orchestrations.state import State
@@ -66,6 +67,9 @@ def format_guidelines(state: State) -> str:
 
 
 def plan_prompt(state: State) -> HumanMessage:
+    """
+    Build the prompt that instructs the LLM to return a high-level plan.
+    """
     replan_flag = state.get("replan_flag", False)
     user_query = state.get("user_query", "")
     prior_plan = state.get("plan") or {}
@@ -95,3 +99,11 @@ def plan_prompt(state: State) -> HumanMessage:
     prompt_content += f"\nUser_query: {user_query}"
 
     return HumanMessage(content=prompt_content)
+
+
+def planner_node(state: State) -> Command[Literal["executor"]]:
+    """
+    Runs the planning LLM and stores the resulting plan in state.
+    Refactored for robustness.
+    """
+    
