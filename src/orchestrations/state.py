@@ -3,8 +3,8 @@ from langgraph.graph import MessagesState
 
 
 class State(MessagesState):
-    userQuery: Optional[str]
-    enableAgent: Optional[List[str]]
+    user_query: Optional[str]
+    enable_agent: Optional[List[str]]
     plan: Optional[List[Dict[int, Dict[str, Any]]]]
     current_step: int
     agent_query: Optional[str]

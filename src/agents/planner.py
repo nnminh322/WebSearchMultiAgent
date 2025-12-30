@@ -15,7 +15,7 @@ with open("configs/agent_config.yaml", "r") as f:
     agent_config = yaml.safe_load(f)
     planner_config = agent_config["planner"]
 
-with open("configs/graph_config/yaml", "r") as f:
+with open("configs/graph_config.yaml", "r") as f:
     graph_config = yaml.safe_load(f)
     MAX_REPLANS = graph_config["system"]["max_replans"]
 
@@ -25,11 +25,10 @@ REPLAN_PROMPT_TEMPLATE = open("configs/prompts/replan.txt", "r").read()
 REASONING_LLM = get_llm("planner")
 
 
-
 def format_agent_list(state: State) -> str:
     enabled_list = get_enabled_agents(state=state)
     agent_list = []
-    for agent_key, agent_detail in AGENTS_DESCRIPTIONS.item():
+    for agent_key, agent_detail in AGENTS_DESCRIPTIONS.items():
         if agent_key in enabled_list:
             agent_list.append(f"  • '{agent_key}' - {agent_detail['capability']}")
 
@@ -102,12 +101,40 @@ def plan_prompt(state: State) -> HumanMessage:
     return HumanMessage(content=prompt_content)
 
 
-
 # def planner_node(state: State) -> Command[Literal["executor"]]:
 def planner_node(state: State):
     """
     Runs the planning LLM and stores the resulting plan in state.
     Refactored for robustness.
     """
-    
-    pass
+    llm_reply = REASONING_LLM.invoke([plan_prompt(state=state)])
+
+    try:
+        respone_content = (
+            llm_reply.content
+            if isinstance(llm_reply.content, str)
+            else str(llm_reply.content)
+        )
+        parsed_plan = json.loads(respone_content)
+    except json.JSONDecodeError:
+        raise ValueError(f"Planner returned invalid JSON:\n{llm_reply.content}")
+    replan_flag = state.get("replan_flag", False)
+    updated_plan: Dict[str, Any] = parsed_plan
+
+    return Command(
+        update={
+            "plan": updated_plan,
+            "message": [
+                HumanMessage(
+                    content=llm_reply.content,
+                    name="replan" if replan_flag else "initial_plan",
+                )
+            ],
+            "user_query": state.get("user_query", state["messages"][0].content),
+            "current_step": 1 if not replan_flag else state["current_step"],
+            "replan_flag": state.get("replan_flag", False),
+            "last_reason": "",
+            "enabled_agents": state.get("enabled_agents"),
+        },
+        goto="executor"
+    )

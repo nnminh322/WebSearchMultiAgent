@@ -17,7 +17,6 @@ def get_llm(agent_name: str = "default", temperature: Optional[float] = None):
     default_config = GLOBAL_AGENT_CONFIG.get("default", {})
     specific_config = GLOBAL_AGENT_CONFIG.get(agent_name)
 
-    # PHẢI COPY để không làm hỏng biến toàn cục
     agent_config = (specific_config if specific_config else default_config).copy()
 
     api_key_name = agent_config.pop("api_key_name")
