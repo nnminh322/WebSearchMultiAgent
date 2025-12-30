@@ -25,6 +25,7 @@ REPLAN_PROMPT_TEMPLATE = open("configs/prompts/replan.txt", "r").read()
 REASONING_LLM = get_llm("planner")
 
 
+
 def format_agent_list(state: State) -> str:
     enabled_list = get_enabled_agents(state=state)
     agent_list = []
@@ -101,9 +102,12 @@ def plan_prompt(state: State) -> HumanMessage:
     return HumanMessage(content=prompt_content)
 
 
-def planner_node(state: State) -> Command[Literal["executor"]]:
+
+# def planner_node(state: State) -> Command[Literal["executor"]]:
+def planner_node(state: State):
     """
     Runs the planning LLM and stores the resulting plan in state.
     Refactored for robustness.
     """
     
+    pass
