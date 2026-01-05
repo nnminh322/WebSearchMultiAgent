@@ -13,8 +13,8 @@ def build_graph():
     planner = PlannerAgent()
     executor = ExecutorAgent()
     web_researcher = WebResearcherAgent()
-    chart_gen = ChartGeneratorAgent()
-    chart_sum = ChartSummarizerAgent()
+    chart_generator = ChartGeneratorAgent()
+    chart_summarizer = ChartSummarizerAgent()
     synthesizer = SynthesizerAgent()
 
     workflow = StateGraph(State)
@@ -22,8 +22,8 @@ def build_graph():
     workflow.add_node("planner", planner.run)
     workflow.add_node("executor", executor.run)
     workflow.add_node("web_researcher", web_researcher.run)
-    workflow.add_node("chart_gen", chart_gen.run)
-    workflow.add_node("chart_sum", chart_sum.run)
+    workflow.add_node("chart_generator", chart_generator.run)
+    workflow.add_node("chart_summarizer", chart_summarizer.run)
     workflow.add_node("synthesizer", synthesizer.run)
 
     workflow.add_edge(START, "planner")
