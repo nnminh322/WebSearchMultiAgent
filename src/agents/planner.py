@@ -25,10 +25,10 @@ class PlannerAgent:
             graph_config = yaml.safe_load(f)
             self.max_replans = graph_config.get("system", {}).get("max_replans", 3)
 
-        with open("configs/prompts/planner.txt", "r", encoding="utf-8") as f:
+        with open("configs/prompts_template/planner.txt", "r", encoding="utf-8") as f:
             self.plan_prompt_template = f.read()
 
-        with open("configs/prompts/replan.txt", "r", encoding="utf-8") as f:
+        with open("configs/prompts_template/replan.txt", "r", encoding="utf-8") as f:
             self.replan_prompt_template = f.read()
 
     def _format_agent_list(self, state: State) -> str:

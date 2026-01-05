@@ -50,7 +50,7 @@ class AgentMetrics:
                     collect_list=False,
                 )
             })
-            .aggregate(np.mean)
+            .aggregate(np.mean) # type: ignore
         )
 
     def get_trace_metrics(self):

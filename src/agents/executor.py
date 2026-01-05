@@ -7,7 +7,7 @@ from orchestrations.state import State
 from core.llm_factory import LLM_factory
 from utils.helper import get_enabled_agents
 
-EXECUTOR_PROMPT_TEMPLATE = open("configs/prompts/executor.txt").read()
+EXECUTOR_PROMPT_TEMPLATE = open("configs/prompts_template/executor.txt").read()
 
 with open("configs/graph_config.yaml", "r") as f:
     graph_config = yaml.safe_load(f)

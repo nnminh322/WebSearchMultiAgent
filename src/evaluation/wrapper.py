@@ -1,5 +1,5 @@
 from trulens.apps.langgraph import TruGraph
-from src.evaluation.metrics import AgentMetrics
+from evaluation.metrics import AgentMetrics
 
 def create_tru_recorder(graph, app_name="Web Search Agent", app_version="v1.0"):
     """

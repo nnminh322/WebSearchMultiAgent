@@ -7,9 +7,9 @@ from langchain_core.messages import HumanMessage
 load_dotenv()
 sys.path.append(os.path.join(os.getcwd(), "src"))
 
-from src.orchestrations.graph import build_graph
-from src.evaluation.config import get_trulens_session, reset_eval_db
-from src.evaluation.wrapper import create_tru_recorder
+from orchestrations.graph import build_graph
+from evaluation.config import get_trulens_session, reset_eval_db
+from evaluation.wrapper import create_tru_recorder
 
 
 def run_benchmark():
