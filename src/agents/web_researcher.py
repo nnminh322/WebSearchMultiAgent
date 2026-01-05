@@ -14,7 +14,7 @@ WEB_RESEARCHER_INSTRUCTIONS = open(
 
 class WebResearcherAgent:
     def __init__(self):
-        self.llm = LLM_factory.get_llm("web_reseacher")
+        self.llm = LLM_factory.get_llm("web_researcher")
         self.tools = [TavilySearch(max_results=5)]
         self.system_prompt = agent_system_prompt(suffix=WEB_RESEARCHER_INSTRUCTIONS)
 

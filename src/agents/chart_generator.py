@@ -32,14 +32,14 @@ def python_repl_tool(
 class ChartGeneratorAgent:
     def __init__(self):
         self.llm = LLM_factory.get_llm("chart_generator")
-        self.sysyem_prompt = agent_system_prompt(suffix=CHART_GENERATOR_INSTRUCTIONS)
+        self.system_prompt = agent_system_prompt(suffix=CHART_GENERATOR_INSTRUCTIONS)
         self.tools = [python_repl_tool]
 
         self.agents = create_agent(
-            model=self.llm, tools=self.tools, system_prompt=self.sysyem_prompt
+            model=self.llm, tools=self.tools, system_prompt=self.system_prompt
         )
 
-    def run(self, state: State) -> Command[Literal["chart_sumarizer"]]:
+    def run(self, state: State) -> Command[Literal["chart_summarizer"]]:
         chart_gen_results = self.agents.invoke(state)  # type: ignore
 
         last_msg = chart_gen_results["messages"][-1]
@@ -47,4 +47,4 @@ class ChartGeneratorAgent:
             content=last_msg.content, name="chart_generator"
         )  # re role
 
-        return Command(update={"messages": last_msg}, goto="chart_sumarizer")
+        return Command(update={"messages": last_msg}, goto="chart_summarizer")
