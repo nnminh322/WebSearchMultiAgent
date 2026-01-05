@@ -45,11 +45,11 @@ class ExecutorAgent:
         self, state: State
     ) -> Command[
         Literal["web_researcher", "chart_generator", "synthesizer", "planner"]
-    ]:
+    ]:  # type: ignore
 
         plan = state.get("plan", {})
         step = state.get("current_step", 1)
-        latest_plan: Dict[str, Any] = state.get("plan") or {}
+        latest_plan: Dict[str, Any] = state.get("plan") or {}  # type: ignore
         plan_block: Dict[str, Any] = latest_plan.get(str(step), {})
         plan_agent = plan_block.get("agent", "web_researcher")
         executor_guidelines = format_agent_guidelines_for_executor(state=state)
@@ -57,7 +57,7 @@ class ExecutorAgent:
         user_query = state.get("user_query", "")
         replan_flag = state.get("replan_flag")
         if state.get("replan_flag"):
-            planned_agent = plan.get(str(step), {}).get("agent")
+            planned_agent = plan.get(str(step), {}).get("agent")  # type: ignore
             return Command(
                 update={"replan_flag": False, "current_step": step + 1},
                 goto=planned_agent,
@@ -108,19 +108,48 @@ class ExecutorAgent:
             messages_tail=messages_tail,
         )
 
-        response = self.llm.invoke(HumanMessage(content=prompt_content))
-        parsed = json.loads(response.content)
-        
-        replan = parsed.get("replan", False)
-        goto = parsed.get("goto")
-        query = parsed.get("query")
-        reason = parsed.get("reason")
+        response = self.llm.invoke(HumanMessage(content=prompt_content))  # type: ignore
+        try:
+            content_str = (
+                response.content
+                if isinstance(response.content, str)
+                else str(response.content)
+            )
+            parsed = json.loads(content_str)
+            replan: bool = parsed["replan"]
+            goto: str = parsed["goto"]
+            reason: str = parsed["reason"]
+            query: str = parsed["query"]
+        except Exception as exc:
+            raise ValueError(f"Invalid executor JSON:\n{response.content}") from exc
 
         updates = {
             "messages": [HumanMessage(content=response.content, name="executor")],
             "last_reason": reason,
-            "agent_query": query
+            "agent_query": query,
         }
 
-        replan_attempts = state.get("replan_attempts", {}) or {}
-        step_replan = replan
+        replan_attempts: Dict[int, int] = state.get("replan_attempts", {}) or {}
+        step_replan = replan_attempts.get(step, 0)  
+
+        if replan:
+            if step_replan < MAX_REPLANS:
+                replan_attempts[step] = step_replan + 1 
+                updates.update(
+                    {
+                        "replan_attempts": replan_attempts,
+                        "replan_flag": True,
+                        "current_step": step,
+                    }
+                )
+                return Command(update=updates, goto="planner")
+            else:
+                next_agent = plan.get(str(step + 1), {}).get("agent", "synthesizer") # type: ignore
+                updates["current_step"] = step + 1
+                return Command(update=updates, goto=next_agent)
+
+        planned_agent = plan.get(str(step), {}).get("agent") # type: ignore
+        updates["current_step"] = step + 1 if goto == planned_agent else step
+        updates["replan_flag"] = False
+        return Command(update=updates, goto=goto) # type: ignore
+        

@@ -21,3 +21,19 @@ executor:
   temperature: 0
   response_format:
     type: "json_object"
+
+web_researcher:
+  api_key_name: "web_researcher_api"
+  base_url: "https://models.github.ai/inference"
+  model_name: "openai/gpt-4o"
+  temperature: 0
+  response_format:
+    type: "json_object"
+  
+chart_generator:
+  api_key_name: "chart_generator_api"
+  base_url: "https://models.github.ai/inference"
+  model_name: "openai/gpt-4o"
+  temperature: 0
+  response_format:
+    type: "json_object"

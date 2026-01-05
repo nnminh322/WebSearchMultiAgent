@@ -101,8 +101,7 @@ def plan_prompt(state: State) -> HumanMessage:
     return HumanMessage(content=prompt_content)
 
 
-# def planner_node(state: State) -> Command[Literal["executor"]]:
-def planner_node(state: State):
+def planner_node(state: State) -> Command[Literal["executor"]]:
     """
     Runs the planning LLM and stores the resulting plan in state.
     Refactored for robustness.
