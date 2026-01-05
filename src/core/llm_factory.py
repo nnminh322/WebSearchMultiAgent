@@ -12,22 +12,22 @@ def load_config():
 
 GLOBAL_AGENT_CONFIG = load_config()
 
+class LLM_factory:
+    @staticmethod
+    def get_llm(agent_name: str = "default", temperature: Optional[float] = None):
+        default_config = GLOBAL_AGENT_CONFIG.get("default", {})
+        specific_config = GLOBAL_AGENT_CONFIG.get(agent_name)
 
-def get_llm(agent_name: str = "default", temperature: Optional[float] = None):
-    default_config = GLOBAL_AGENT_CONFIG.get("default", {})
-    specific_config = GLOBAL_AGENT_CONFIG.get(agent_name)
+        agent_config = (specific_config if specific_config else default_config).copy()
 
-    agent_config = (specific_config if specific_config else default_config).copy()
+        api_key_name = agent_config.pop("api_key_name")
+        api_key = os.getenv(api_key_name)
+        api_key = SecretStr(api_key) if api_key else None
+        if temperature is not None:
+            agent_config["temperature"] = temperature
+        try:
+            llm = ChatOpenAI(api_key=api_key, **agent_config)
+        except Exception as e:
+            raise ValueError(f"Error when get llm: {e}")
 
-    api_key_name = agent_config.pop("api_key_name")
-    api_key = os.getenv(api_key_name)
-    api_key = SecretStr(api_key) if api_key else None
-    if temperature is not None:
-        agent_config["temperature"] = temperature
-
-    try:
-        llm = ChatOpenAI(api_key=api_key, **agent_config)
-    except Exception as e:
-        raise ValueError(f"Error when get llm: {e}")
-
-    return llm
+        return llm

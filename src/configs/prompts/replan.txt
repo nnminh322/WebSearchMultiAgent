@@ -1,7 +1,7 @@
 The current plan needs revision because: {replan_reason}
 
 Current plan:
-{json.dumps(prior_plan, indent=2)}
+{current_plan}
 
 When replanning:
 - Focus on UNBLOCKING the workflow rather than perfecting it.

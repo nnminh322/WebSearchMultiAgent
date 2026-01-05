@@ -1,7 +1,6 @@
 from typing import Any, Dict, List, Optional, Literal
 from langgraph.graph import MessagesState
 
-
 class State(MessagesState):
     user_query: Optional[str]
     enable_agent: Optional[List[str]]

@@ -6,7 +6,7 @@ from langchain_core.messages import HumanMessage
 
 from orchestrations.state import State
 from utils.helper import get_enabled_agents
-from core.llm_factory import get_llm
+from core.llm_factory import LLM_factory
 
 with open("configs/agents_description.yaml", "r") as f:
     AGENTS_DESCRIPTIONS = yaml.safe_load(f)
@@ -22,7 +22,7 @@ with open("configs/graph_config.yaml", "r") as f:
 
 PLAN_PROMPT_TEMPLATE = open("configs/prompts/planner.txt", "r").read()
 REPLAN_PROMPT_TEMPLATE = open("configs/prompts/replan.txt", "r").read()
-REASONING_LLM = get_llm("planner")
+REASONING_LLM = LLM_factory.get_llm("planner")
 
 
 def format_agent_list(state: State) -> str:
@@ -88,9 +88,9 @@ def plan_prompt(state: State) -> HumanMessage:
     )
 
     if replan_flag:
-        REPLAN_PROMPT_TEMPLATE = open("configs/prompts/replan.txt", "r").read()
+        current_plan = json.dumps(prior_plan, indent=2)
         replan_instruction = REPLAN_PROMPT_TEMPLATE.format(
-            replan_reason=replan_reason, prior_plan=prior_plan
+            replan_reason=replan_reason, current_plan=current_plan
         )
         prompt_content = base_instruction + replan_instruction
     else:
@@ -136,5 +136,5 @@ def planner_node(state: State):
             "last_reason": "",
             "enabled_agents": state.get("enabled_agents"),
         },
-        goto="executor"
+        goto="executor",
     )
