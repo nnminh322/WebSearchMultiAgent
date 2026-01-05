@@ -9,8 +9,8 @@ from typing import Literal
 from langgraph.types import Command
 from langchain_core.messages import HumanMessage
 
-CHART_GENERATOR_PROMPT_TEMPLATE = open(
-    "configs/prompts/chart_generator.txt", "r"
+CHART_GENERATOR_INSTRUCTIONS = open(
+    "configs/instructions/chart_generator.txt", "r"
 ).read()
 
 
@@ -32,7 +32,7 @@ def python_repl_tool(
 class ChartGeneratorAgent:
     def __init__(self):
         self.llm = LLM_factory.get_llm("chart_generator")
-        self.sysyem_prompt = agent_system_prompt(suffix=CHART_GENERATOR_PROMPT_TEMPLATE)
+        self.sysyem_prompt = agent_system_prompt(suffix=CHART_GENERATOR_INSTRUCTIONS)
         self.tools = [python_repl_tool]
 
         self.agents = create_agent(

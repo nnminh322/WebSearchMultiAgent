@@ -7,15 +7,17 @@ from orchestrations.state import State
 from langchain_core.messages import HumanMessage
 from utils.helper import agent_system_prompt
 
-WEB_RESEARCHER_PROMPT_TEMPLATE = open("configs/prompts/web_researcher.txt", "r").read()
+WEB_RESEARCHER_INSTRUCTIONS = open(
+    "configs/instructions/web_researcher.txt", "r"
+).read()
 
 
 class WebResearcherAgent:
     def __init__(self):
         self.llm = LLM_factory.get_llm("web_reseacher")
         self.tools = [TavilySearch(max_results=5)]
-        self.system_prompt = agent_system_prompt(suffix=WEB_RESEARCHER_PROMPT_TEMPLATE)
-        
+        self.system_prompt = agent_system_prompt(suffix=WEB_RESEARCHER_INSTRUCTIONS)
+
         self.agents = create_agent(
             model=self.llm, tools=self.tools, system_prompt=self.system_prompt
         )
