@@ -1,0 +1,9 @@
+langchain
+langchain-openai
+langchain-tavily
+langchain-experimental
+langgraph
+pydantic
+pyyaml
+jupyter
+matplotlib
