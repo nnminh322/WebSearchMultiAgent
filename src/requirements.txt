@@ -7,3 +7,9 @@ pydantic
 pyyaml
 jupyter
 matplotlib
+trulens-core
+trulens-dashboard
+trulens-apps-langgraph
+trulens-providers-openai
+numpy
+openai
