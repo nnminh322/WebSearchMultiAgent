@@ -11,6 +11,7 @@ from core.llm_factory import LLM_factory
 class PlannerAgent:
     def __init__(self):
         self.llm = LLM_factory.get_llm("planner")
+        self._load_configs()
 
     def _load_configs(self):
         """Load all necessary yaml and text configurations."""

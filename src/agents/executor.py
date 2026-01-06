@@ -108,7 +108,7 @@ class ExecutorAgent:
             messages_tail=messages_tail,
         )
 
-        response = self.llm.invoke(HumanMessage(content=prompt_content))  # type: ignore
+        response = self.llm.invoke([HumanMessage(content=prompt_content)])  
         try:
             content_str = (
                 response.content

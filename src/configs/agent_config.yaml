@@ -3,8 +3,6 @@ default:
   base_url: "https://models.github.ai/inference"
   model_name: "openai/gpt-4o"
   temperature: 0
-  # response_format:
-  #   type: "json_object"
 
 planner:
   api_key_name: "planner_api"
@@ -27,29 +25,21 @@ web_researcher:
   base_url: "https://models.github.ai/inference"
   model_name: "openai/gpt-4o"
   temperature: 0
-  response_format:
-    type: "json_object"
-  
+
 chart_generator:
   api_key_name: "chart_generator_api"
   base_url: "https://models.github.ai/inference"
   model_name: "openai/gpt-4o"
   temperature: 0
-  response_format:
-    type: "json_object"
-  
+
 chart_summarizer:
   api_key_name: "chart_summarizer_api"
   base_url: "https://models.github.ai/inference"
   model_name: "openai/gpt-4o"
   temperature: 0
-  response_format:
-    type: "json_object"
 
 synthesizer:
   api_key_name: "synthesizer_api"
   base_url: "https://models.github.ai/inference"
   model_name: "openai/gpt-4o"
   temperature: 0
-  response_format:
-    type: "json_object"

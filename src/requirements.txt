@@ -13,4 +13,5 @@ trulens-apps-langgraph
 trulens-providers-openai
 numpy
 openai
+streamlit
 "langserve[all]"

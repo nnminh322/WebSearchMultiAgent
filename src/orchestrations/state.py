@@ -10,3 +10,5 @@ class State(MessagesState):
     last_reason: Optional[str]
     replan_flag: Optional[bool]
     replan_attempts: Optional[Dict[int, int]]
+
+    final_answer: Optional[str]
