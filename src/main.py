@@ -41,7 +41,6 @@ def main():
                 for node, values in event.items():
                     print(f"   ⚙️  [Node: {node}] đã chạy xong.")
                     
-                    # Nếu có câu trả lời cuối cùng
                     if "final_answer" in values:
                         print(f"\n✅ FINAL ANSWER:\n{values['final_answer']}")
                         print("-" * 50)
