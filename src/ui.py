@@ -12,7 +12,8 @@ load_dotenv()
 
 from orchestrations.graph import build_graph
 
-st.set_page_config(page_title="Web Search Agent", page_icon="🕵️", layout="wide")
+st.set_page_config(page_title="Web Search Agent", page_icon="🕵️", layout="centered")
+
 st.title("🕵️ Web Search Multi-Agent System")
 
 if "graph" not in st.session_state:
@@ -47,8 +48,6 @@ if prompt := st.chat_input("Nhập câu hỏi nghiên cứu... (VD: Giá vàng h
         }
         
         try:
-            existing_pngs = set(glob.glob('*.png'))
-
             for event in st.session_state.graph.stream(initial_state, config={"recursion_limit": 50}): #type: ignore
                 for node, values in event.items():
                     status_container.write(f"✅ **{node}** đã hoàn thành tác vụ.")
@@ -75,7 +74,6 @@ if prompt := st.chat_input("Nhập câu hỏi nghiên cứu... (VD: Giá vàng h
                 latest_file = max(list_pngs, key=os.path.getmtime)
                 if time.time() - os.path.getmtime(latest_file) < 60:
                     st.image(latest_file, caption=f"Biểu đồ: {latest_file}")
-                    # st.session_state.messages.append(AIMessage(content=f"IMAGE_PATH:{latest_file}"))
 
         except Exception as e:
             status_container.update(label="❌ Có lỗi xảy ra!", state="error", expanded=True)

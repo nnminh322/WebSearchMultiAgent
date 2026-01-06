@@ -30,7 +30,7 @@ Prompt used to generate the example chart:
 
 Example output image (already in this repo):
 
-![Vietnam vs Thailand GDP growth comparison](image/vietnam_thailand_gdp_growth_comparison.png)
+![Vietnam vs Thailand GDP growth comparison](image/example.png)
 
 ## Install
 
