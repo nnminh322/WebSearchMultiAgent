@@ -12,13 +12,15 @@ CHART_SUMMARIZER_INSTRUCTIONS = open(
 ).read()
 
 
+def pr(number: int):
+    print(1 + 2)
+
+
 class ChartSummarizerAgent:
     def __init__(self):
         self.llm = LLM_factory.get_llm("chart_summarizer")
         self.tools = []
-        self.system_prompt = agent_system_prompt(
-            suffix=CHART_SUMMARIZER_INSTRUCTIONS
-        )
+        self.system_prompt = agent_system_prompt(suffix=CHART_SUMMARIZER_INSTRUCTIONS)
 
         self.agent = create_agent(
             model=self.llm, tools=self.tools, system_prompt=self.system_prompt
